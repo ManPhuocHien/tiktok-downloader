@@ -10,8 +10,8 @@ video_url = st.text_input("🔗 Nhập link TikTok:")
 
 def get_download_link(video_url):
     try:
-        # Thay API cũ bằng API mới từ snaptik.app
-        api_url = f"https://snaptik.app/abex?url={video_url}"
+        # API ssstik.io
+        api_url = f"https://api.ssstik.io/convert?url={video_url}"
         res = requests.get(api_url)
         
         if res.status_code == 200:
@@ -22,6 +22,7 @@ def get_download_link(video_url):
             return None
     except:
         return None
+
 
 if st.button("🚀 Tải video"):
     if video_url:
