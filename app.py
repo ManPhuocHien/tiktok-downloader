@@ -8,22 +8,25 @@ st.write("Nhập link video TikTok để tải về máy với chất lượng c
 
 video_url = st.text_input("🔗 Nhập link TikTok:")
 
+import yt_dlp
+
 def get_download_link(video_url):
     try:
-        # API ssstik.io
-        api_url = f"https://api.ssstik.io/convert?url={video_url}"
-        res = requests.get(api_url)
+        ydl_opts = {
+            'format': 'bestaudio/best',  # Chọn chất lượng video tốt nhất
+            'outtmpl': '%(id)s.%(ext)s',  # Đặt tên file video
+            'quiet': False,  # Hiển thị thông báo chi tiết
+        }
         
-        if res.status_code == 200:
-            # Lấy link video không watermark
-            video_url = res.json()["url"]
-            return video_url
-        else:
-            return None
-    except:
+        with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+            info_dict = ydl.extract_info(video_url, download=False)  # Không tải về mà chỉ lấy thông tin
+            video_url = info_dict['url']  # Lấy link video
+
+        return video_url
+
+    except Exception as e:
         return None
-
-
+        
 if st.button("🚀 Tải video"):
     if video_url:
         st.info("⏳ Đang xử lý, vui lòng chờ...")
