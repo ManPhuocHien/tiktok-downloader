@@ -1,4 +1,3 @@
-
 import streamlit as st
 import requests
 
@@ -11,13 +10,16 @@ video_url = st.text_input("🔗 Nhập link TikTok:")
 
 def get_download_link(video_url):
     try:
-        res = requests.get(f"https://api.tikmate.app/api/lookup?url={video_url}")
+        # Thay API cũ bằng API mới từ snaptik.app
+        api_url = f"https://snaptik.app/abex?url={video_url}"
+        res = requests.get(api_url)
+        
         if res.status_code == 200:
-            data = res.json()
-            token = data["token"]
-            id = data["id"]
-            final_link = f"https://tikmate.app/download/{token}/{id}.mp4"
-            return final_link
+            # Lấy link video không watermark
+            video_url = res.json()["url"]
+            return video_url
+        else:
+            return None
     except:
         return None
 
